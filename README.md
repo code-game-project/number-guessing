@@ -1,25 +1,24 @@
-# number_guessing
-![CodeGame Version](https://img.shields.io/badge/CodeGame-v0.6-orange)
-![CodeGame GameServer Version](https://img.shields.io/badge/GameServer-v0.1-yellow)
-![CGE Version](https://img.shields.io/badge/CGE-v0.3-green)
+# Number Guessing
+![CodeGame Version](https://img.shields.io/badge/CodeGame-v0.7-orange)
+![CGE Version](https://img.shields.io/badge/CGE-v0.4-green)
 
 A number guessing game.
 
 ## Known instances
 
-- `games.code-game.org/number_guessing`
+- `games.code-game.org/number-guessing`
 
 ## Usage
 
 ```sh
-# Run on default port 80
-number_guessing
+# Run on default port 8080
+number-guessing
 
 # Specify a custom port
-number_guessing --port=8080
+number-guessing --port=5000
 
 ## Specify a custom port through an environment variable
-CG_PORT=8080 number_guessing
+CG_PORT=5000 number-guessing
 ```
 
 ### Running with Docker
@@ -29,15 +28,16 @@ Prerequisites:
 
 ```sh
 # Download image
-docker pull codegameproject/number_guessing:0.1
+docker pull codegameproject/number-guessing:0.1
 
 # Run container
-docker run -d -p <port-on-host-machine>:8080 --name number_guessing codegameproject/number_guessing:0.1
+docker run -d --restart on-failure -p <port-on-host-machine>:8080 --name number-guessing codegameproject/number-guessing:0.1
 ```
 
-## Event Flow
+## Event flow
 
-1. TODO
+1. Send the `guess` command to make a guess.
+2. Receive either the `too_high`, the `too_low` or the `correct` event.
 
 ## Building
 
@@ -46,8 +46,8 @@ docker run -d -p <port-on-host-machine>:8080 --name number_guessing codegameproj
 - [Go](https://go.dev) 1.18+
 
 ```sh
-git clone https://github.com/code-game-project/number_guessing.git
-cd number_guessing
+git clone https://github.com/code-game-project/number-guessing.git
+cd number-guessing
 go build .
 ```
 ## License

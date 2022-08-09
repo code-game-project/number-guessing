@@ -1,3 +1,31 @@
+// A number guessing game.
 name number_guessing
-version 0.3
+version 0.4
+
+config {
+	// The minimum number (inclusive) default=0
+	min: int,
+	// The maximum number (inclusive) default=100
+	max: int
+}
+
+// Send the `guess` command to make a guess.
+command guess {
+	// The number you guess.
+	number: int
+}
+
+// You guessed too high.
+event too_high {}
+
+// You guessed too low.
+event too_low {}
+
+// You guessed the correct number.
+event correct {
+	// The correct number.
+	number: int,
+	// The number of tries.
+	tries: int
+}
 

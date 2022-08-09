@@ -1,16 +1,21 @@
 package main
 
 import (
+	"encoding/json"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/code-game-project/go-server/cg"
-	"github.com/code-game-project/number_guessing/numberguessing"
 	"github.com/spf13/pflag"
+
+	"github.com/code-game-project/number-guessing/numberguessing"
 )
 
 func main() {
+	rand.Seed(time.Now().UnixMilli())
+
 	var port int
 	pflag.IntVarP(&port, "port", "p", 0, "The network port of the game server.")
 	pflag.Parse()
@@ -23,22 +28,35 @@ func main() {
 	}
 
 	if port == 0 {
-		port = 80
+		port = 8080
 	}
 
-	server := cg.NewServer("number_guessing", cg.ServerConfig{
+	server := cg.NewServer("number-guessing", cg.ServerConfig{
 		DisplayName:             "Number Guessing",
 		MaxPlayersPerGame:       1,
-		DeleteInactiveGameDelay: 1 * time.Minute,
-		KickInactivePlayerDelay: 1 * time.Minute,
+		DeleteInactiveGameDelay: 30 * time.Second,
+		KickInactivePlayerDelay: 5 * time.Minute,
 		Version:                 "0.1",
 		Description:             "A number guessing game.",
-		RepositoryURL:           "https://github.com/code-game-project/number_guessing",
+		RepositoryURL:           "https://github.com/code-game-project/number-guessing",
 		Port:                    port,
 		CGEFilepath:             "events.cge",
 	})
 
-	server.Run(func(cgGame *cg.Game) {
-		numberguessing.NewGame(cgGame).Run()
+	server.Run(func(cgGame *cg.Game, config json.RawMessage) {
+		var gameConfig numberguessing.GameConfig
+		err := json.Unmarshal(config, &gameConfig)
+		if err != nil || gameConfig.Min > gameConfig.Max {
+			cgGame.Log.ErrorData(config, "invalid game config")
+			gameConfig.Min = 0
+			gameConfig.Max = 100
+		}
+		if gameConfig.Max == 0 {
+			gameConfig.Max = 100
+		}
+
+		cgGame.SetConfig(gameConfig)
+
+		numberguessing.NewGame(cgGame, gameConfig).Run()
 	})
 }
