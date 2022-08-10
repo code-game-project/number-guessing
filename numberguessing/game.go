@@ -55,9 +55,9 @@ func (g *Game) handleEvent(origin *cg.Player, cmd cg.Command) {
 				Number: g.number,
 				Tries:  g.tries,
 			})
+			g.cg.Log.InfoData(cmd, "The user guessed the correct number (%d) after %d tries.", g.number, g.tries)
 			g.tries = 0
 			g.number = rand.Intn(g.max+1-g.min) + g.min
-			g.cg.Log.InfoData(cmd, "The user guessed the correct number (%d) after %d tries.", g.number, g.tries)
 		}
 	}
 }
