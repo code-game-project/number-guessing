@@ -46,10 +46,14 @@ func (g *Game) handleEvent(origin *cg.Player, cmd cg.Command) {
 		}
 		if data.Number > g.number {
 			g.cg.Log.InfoData(cmd, "The user guessed too high. (%d tries)", g.tries)
-			g.cg.Send(TooHighEvent, nil)
+			g.cg.Send(TooHighEvent, TooHighEventData{
+				Number: data.Number,
+			})
 		} else if data.Number < g.number {
 			g.cg.Log.InfoData(cmd, "The user guessed too low. (%d tries)", g.tries)
-			g.cg.Send(TooLowEvent, nil)
+			g.cg.Send(TooLowEvent, TooLowEventData{
+				Number: data.Number,
+			})
 		} else {
 			g.cg.Send(CorrectEvent, CorrectEventData{
 				Number: g.number,

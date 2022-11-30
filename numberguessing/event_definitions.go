@@ -23,12 +23,18 @@ type GuessCmdData struct {
 // You guessed too high.
 const TooHighEvent cg.EventName = "too_high"
 
-type TooHighEventData struct{}
+type TooHighEventData struct {
+	// The guessed number.
+	Number int `json:"number"`
+}
 
-// Your too low.
+// You guessed too low.
 const TooLowEvent cg.EventName = "too_low"
 
-type TooLowEventData struct{}
+type TooLowEventData struct {
+	// The guessed number.
+	Number int `json:"number"`
+}
 
 // You guessed the correct number.
 const CorrectEvent cg.EventName = "correct"

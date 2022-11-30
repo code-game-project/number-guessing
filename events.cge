@@ -16,10 +16,16 @@ command guess {
 }
 
 // You guessed too high.
-event too_high {}
+event too_high {
+	// The guessed number.
+	number: int,
+}
 
 // You guessed too low.
-event too_low {}
+event too_low {
+	// The guessed number.
+	number: int,
+}
 
 // You guessed the correct number.
 event correct {
