@@ -36,7 +36,7 @@ func main() {
 		MaxPlayersPerGame:       1,
 		DeleteInactiveGameDelay: 30 * time.Second,
 		KickInactivePlayerDelay: 5 * time.Minute,
-		Version:                 "0.1",
+		Version:                 "0.2",
 		Description:             "A number guessing game.",
 		RepositoryURL:           "https://github.com/code-game-project/number-guessing",
 		Port:                    port,
