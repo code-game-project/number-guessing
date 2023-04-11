@@ -44,16 +44,22 @@ func (g *Game) handleEvent(origin *cg.Player, cmd cg.Command) {
 			origin.Log.Error("Failed to unmarshal command data: %s", err)
 			return
 		}
+		type guessLogMessage struct {
+			Number int `json:"number"`
+			Tries  int `json:"tries"`
+		}
 		if data.Number > g.number {
-			g.cg.Log.InfoData(cmd, "The user guessed too high. (%d tries)", g.tries)
-			g.cg.Send(TooHighEvent, TooHighEventData{
+			g.cg.Log.InfoData(guessLogMessage{
 				Number: data.Number,
-			})
+				Tries:  g.tries,
+			}, "The user guessed too high.")
+			g.cg.Send(TooHighEvent, TooHighEventData(data))
 		} else if data.Number < g.number {
-			g.cg.Log.InfoData(cmd, "The user guessed too low. (%d tries)", g.tries)
-			g.cg.Send(TooLowEvent, TooLowEventData{
+			g.cg.Log.InfoData(guessLogMessage{
 				Number: data.Number,
-			})
+				Tries:  g.tries,
+			}, "The user guessed too low.")
+			g.cg.Send(TooLowEvent, TooLowEventData(data))
 		} else {
 			g.cg.Send(CorrectEvent, CorrectEventData{
 				Number: g.number,
