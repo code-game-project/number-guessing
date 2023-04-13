@@ -18,6 +18,8 @@ func main() {
 
 	var port int
 	pflag.IntVarP(&port, "port", "p", 0, "The network port of the game server.")
+	var frontend string
+	pflag.StringVar(&frontend, "frontend", "", "The root directory of the frontend")
 	pflag.Parse()
 
 	if port == 0 {
@@ -41,6 +43,7 @@ func main() {
 		RepositoryURL:           "https://github.com/code-game-project/number-guessing",
 		Port:                    port,
 		CGEFilepath:             "events.cge",
+		WebRoot:                 frontend,
 	})
 
 	server.Run(func(cgGame *cg.Game, config json.RawMessage) {
